@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alice.time.dao.TimeDao">
+	<resultMap type="Time" id="timeMap">
+		<id column="TIME_ID" property="timeId" javaType="java.lang.String" />
+		<result column="TIME_NAME" property="timeName" javaType="java.lang.String" />
+		<result column="TIME_EXPIRE_DATE" property="timeExpireDate" javaType="java.lang.String" />
+		<result column="TIME_SLOGAN" property="timeSlogan" javaType="java.lang.String" />
+		<result column="TIME_TYPE" property="timeType" javaType="java.lang.String" />
+		<result column="TIME_STATUS" property="timeStatus" javaType="java.lang.String" />
+		<result column="CYCLE_DATE" property="cycleDate" javaType="java.lang.String" />
+		<result column="CYCLE_TYPE" property="cycleType" javaType="java.lang.String" />
+		<!-- 额外信息 -->
+		<result column="TIME_MODE" property="timeMode" javaType="java.lang.String" />
+		<result column="REMAIN_COUNT_DOWN_TIME" property="remainCountDownTime" javaType="java.lang.String" />
+		<result column="TOTAL_COUNT_DOWN_TIME" property="totalCountDownTime" javaType="java.lang.String" />
+	</resultMap>
+	
+	<select id="queryMostImportantTime" resultMap="timeMap">
+		SELECT TIME_ID,TIME_NAME,TIME_EXPIRE_DATE,TIME_SLOGAN,TIME_TYPE,TIME_STATUS,CYCLE_DATE,CYCLE_TYPE,
+		TIME_MODE,REMAIN_COUNT_DOWN_TIME,TOTAL_COUNT_DOWN_TIME FROM QUERY_MOST_IMPORTANT_TIME
+	</select>
+</mapper>

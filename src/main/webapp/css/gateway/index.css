@@ -1,0 +1,17 @@
+[class*="col-"] {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  background-color: rgba(86,61,124,.15);
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgba(86,61,124,.2);
+}
+
+.most-remain-progress {
+	min-width: 1%;
+	width: 1%;
+}
+
+.progress-bar-over {
+  background-color: #969696;
+}

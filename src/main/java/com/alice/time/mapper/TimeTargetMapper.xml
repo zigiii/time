@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alice.time.dao.TimeTargetDao">
+	<resultMap type="TimeTarget" id="timeTargetMap">
+		<id column="TARGET_ID" property="targetId" javaType="java.lang.String" />
+		<result column="TARGET_NAME" property="targetName" javaType="java.lang.String" />
+		<result column="TARGET_EXPIRE_DATE" property="targetExpireDate" javaType="java.lang.String" />
+		<result column="TARGET_SLOGAN" property="targetSlogan" javaType="java.lang.String" />
+		<result column="TARGET_TYPE" property="targetType" javaType="java.lang.String" />
+		<result column="TARGET_STATUS" property="targetStatus" javaType="java.lang.String" />
+		<result column="CYCLE_DATE" property="cycleDate" javaType="java.lang.String" />
+		<result column="CYCLE_TYPE" property="cycleType" javaType="java.lang.String" />
+		<result column="WARN_DATE" property="warnDate" javaType="java.lang.String" />
+		<result column="WARN_TYPE" property="warnType" javaType="java.lang.String" />
+		<result column="IMPORTANCE" property="importance" javaType="java.lang.String" />
+		<result column="USER_ID" property="userId" javaType="java.lang.String" />
+		<result column="SORT" property="sort" javaType="java.lang.String" />
+		<result column="TARGET_UUID" property="targetUuid" javaType="java.lang.String" />
+		<result column="CREATE_USER_ID" property="createUserId" javaType="java.lang.String" />
+		<result column="CREATE_DATE" property="createDate" javaType="java.lang.String" />
+		<result column="UPDATE_USER_ID" property="updateUserId" javaType="java.lang.String" />
+		<result column="UPDATE_DATE" property="updateDate" javaType="java.lang.String" />
+		<result column="VALID" property="valid" javaType="java.lang.String" />
+	</resultMap>
+	
+	<update id="updateTimeTarget" parameterType="com.alice.time.bean.TimeTarget">
+		UPDATE TIME_TARGET
+		<set>
+			<if test="targetName != null">
+				TARGET_NAME = #{targetName,jdbcType=VARCHAR},
+			</if>
+		</set>
+		<where>
+			TARGET_ID = #{targetId,jdbcType=INTEGER}
+		</where>
+	</update>
+	
+</mapper>

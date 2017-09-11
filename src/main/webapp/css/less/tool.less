@@ -1,0 +1,161 @@
+/* 常用工具类 */
+
+.clearfix:after {
+    clear: both;
+}
+
+.clearfix:before,
+.clearfix:after {
+    content: ' ';
+    display: table;
+}
+
+.clearfix {
+    *zoom: 1;
+}
+.show {
+	display: block;
+}
+.hide { 
+	display: none;
+}
+.fl { 
+	float: left;
+}
+.fr { 
+	float: right;
+}
+.mt-15 { 
+	margin-top: 15px;
+}
+.mr-15 { 
+	margin-right: 15px;
+}
+.mb-15 { 
+	margin-bottom: 15px;
+}
+.ml-15 { 
+	margin-left: 15px;
+}
+.m-15 { 
+	margin: 15px;
+}
+
+.pt-15 { 
+	padding-top: 15px;
+}
+.pr-15 { 
+	padding-right: 15px;
+}
+.pb-15 { 
+	padding-bottom: 15px;
+}
+.pl-15 { 
+	padding-left: 15px;
+}
+.p-15 { 
+	padding: 15px;
+}
+
+.ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ellipsis-2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.line-top:before {
+    content: " ";
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 1px;
+    border-top: 1px solid @line-half;
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+    -webkit-transform: scaleY(0.5);
+    transform: scaleY(0.5);
+}
+
+.line-right:after {
+    content: " ";
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 1px;
+    border-right: 1px solid @line-half;
+    -webkit-transform-origin: 0 center;
+    transform-origin: 0 center;
+    -webkit-transform: scale(0.5, 0.6);
+    transform: scale(0.5, 0.6);
+}
+
+.line-bottom:after {
+    content: " ";
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    height: 1px;
+    border-bottom: 1px solid @line-half;
+    -webkit-transform-origin: 0 100%;
+    transform-origin: 0 100%;
+    -webkit-transform: scaleY(0.5);
+    transform: scaleY(0.5);
+}
+.line-left:before {
+    content: " ";
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 1px;
+    border-right: 1px solid @line-half;
+    -webkit-transform-origin: 0 center;
+    transform-origin: 0 center;
+    -webkit-transform: scaleX(0.5);
+    transform: scaleX(0.5);
+}
+.arrow { 
+	content: " ";
+    display: inline-block;
+    height: 0.1rem;
+    width: 0.1rem;
+    border-width: 0;
+    border-color: @placeholder;
+    border-style: solid;
+    -webkit-transform: rotate(45deg);
+    position: absolute;
+    top: 50%;
+    right: @d15;
+}
+.arrow-up { 
+	border-width: 2px 0 0 2px;
+	margin-top: -0.03rem;
+}
+.arrow-down { 
+	border-width: 0 2px 2px 0;
+	margin-top: -0.08rem;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}

@@ -1,0 +1,76 @@
+//页脚active
+.weui-tabbar__item.weui-bar__item_on { 
+	.weui-tabbar__label { 
+		color: @active;
+	}
+}
+
+//渐变
+.linear-gradient-1 { 
+    color: rgba(43, 192, 195, 1);
+    background-image: -webkit-gradient(linear, 0 0, 0 bottom, from(rgba(43, 192, 195, 1)), to(rgba(19, 178, 152, 1)));
+    background-image: -webkit-linear-gradient(top, rgba(43, 192, 195, 1), rgba(19, 178, 152, 1));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.orange{
+	color: #f4c03e;
+}
+
+.blue{
+	color: #119dff;
+}
+
+.purple {
+	color: #ed4ef7;
+}
+
+.state { 
+	position: relative;
+	overflow: hidden;
+	&:before { 
+		position: absolute;
+		z-index: 1;
+		right: -50%;
+		color: @white;
+		line-height: 2;
+		width: 100%;
+		text-align: center;
+		transform-origin: center top;
+		transform: rotate(45deg) translateY(20px);
+	}
+}
+.state-progressing { 
+	&:before { 
+		content: '进行中';
+		background-color: @orange;
+	}
+}
+
+.state-finished { 
+	position: relative;
+	overflow: hidden;
+	&:before { 
+		content: '已结束';
+		background-color: #bababa;
+	}
+}
+
+.publish { 
+	.icon-add { 
+		width: 50px;
+		height: 50px;
+		position: absolute;
+		top: -20px;
+		left: 50%;
+		margin-left: -25px;
+		padding: 4px;
+		background-color: #f7f7fa;
+		border-radius: 50%;
+		box-shadow: 0 -2px 2px rgba(0, 0, 0, 0.1);
+	}
+	.weui-tabbar__icon { 
+		visibility: hidden;
+	}
+}
