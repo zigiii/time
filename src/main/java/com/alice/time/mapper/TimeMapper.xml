@@ -17,7 +17,195 @@
 	</resultMap>
 	
 	<select id="queryMostImportantTime" resultMap="timeMap">
-		SELECT TIME_ID,TIME_NAME,TIME_EXPIRE_DATE,TIME_SLOGAN,TIME_TYPE,TIME_STATUS,CYCLE_DATE,CYCLE_TYPE,
-		TIME_MODE,REMAIN_COUNT_DOWN_TIME,TOTAL_COUNT_DOWN_TIME FROM QUERY_MOST_IMPORTANT_TIME
+		SELECT
+			p.TIME_ID,
+			p.TIME_NAME,
+			p.TIME_EXPIRE_DATE,
+			p.TIME_SLOGAN,
+			p.TIME_TYPE,
+			p.TIME_STATUS,
+			p.CYCLE_DATE,
+			p.CYCLE_TYPE,
+			p.TIME_MODE,
+			(
+				UNIX_TIMESTAMP(p.TIME_EXPIRE_DATE) - UNIX_TIMESTAMP(SYSDATE())
+			) * 1000 REMAIN_COUNT_DOWN_TIME,
+			(
+				UNIX_TIMESTAMP(p.TIME_EXPIRE_DATE) - UNIX_TIMESTAMP(p.UPDATE_DATE)
+			) * 1000 TOTAL_COUNT_DOWN_TIME
+		FROM
+			(
+				(
+					SELECT
+						t.TARGET_ID TIME_ID,
+						t.TARGET_NAME TIME_NAME,
+						t.TARGET_EXPIRE_DATE TIME_EXPIRE_DATE,
+						t.TARGET_SLOGAN TIME_SLOGAN,
+						'100' TIME_MODE,
+						t.CREATE_DATE,
+						t.UPDATE_DATE,
+						t.TARGET_TYPE TIME_TYPE,
+						t.TARGET_STATUS TIME_STATUS,
+						t.CYCLE_DATE,
+						t.CYCLE_TYPE
+					FROM
+						TIME_TARGET t
+					WHERE
+						t.VALID = '0'
+					AND t.TARGET_STATUS = '10'
+					AND t.USER_ID = #{userId,jdbcType=INTEGER}
+					ORDER BY
+						t.TARGET_EXPIRE_DATE
+					LIMIT #{pageNum,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+				)
+				UNION
+					(
+						SELECT
+							d.HOLIDAY_ID TIME_ID,
+							d.HOLIDAY_NAME TIME_NAME,
+							d.HOLIDAY_EXPIRE_DATE TIME_EXPIRE_DATE,
+							d.HOLIDAY_SLOGAN TIME_SLOGAN,
+							'200' TIME_MODE,
+							d.CREATE_DATE,
+							d.UPDATE_DATE,
+							d.HOLIDAY_TYPE TIME_TYPE,
+							d.HOLIDAY_STATUS TIME_STATUS,
+							d.CYCLE_DATE,
+							d.CYCLE_TYPE
+						FROM
+							TIME_HOLIDAY d
+						WHERE
+							d.VALID = '0'
+						AND d.HOLIDAY_STATUS = '10'
+						AND d.USER_ID = #{userId,jdbcType=INTEGER}
+						ORDER BY
+							d.HOLIDAY_EXPIRE_DATE
+						LIMIT #{pageNum,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+					)
+			) p
+		ORDER BY
+			p.TIME_EXPIRE_DATE
+		LIMIT #{pageNum,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+	</select>
+	
+	<select id="queryPagingTime" resultMap="timeMap">
+		SELECT
+			p.TIME_ID,
+			p.TIME_NAME,
+			p.TIME_EXPIRE_DATE,
+			p.TIME_SLOGAN,
+			p.TIME_TYPE,
+			p.TIME_STATUS,
+			p.CYCLE_DATE,
+			p.CYCLE_TYPE,
+			p.TIME_MODE,
+			(
+				UNIX_TIMESTAMP(p.TIME_EXPIRE_DATE) - UNIX_TIMESTAMP(SYSDATE())
+			) * 1000 REMAIN_COUNT_DOWN_TIME,
+			(
+				UNIX_TIMESTAMP(p.TIME_EXPIRE_DATE) - UNIX_TIMESTAMP(p.UPDATE_DATE)
+			) * 1000 TOTAL_COUNT_DOWN_TIME
+		FROM
+			(
+				(
+					SELECT
+						t.TARGET_ID TIME_ID,
+						t.TARGET_NAME TIME_NAME,
+						t.TARGET_EXPIRE_DATE TIME_EXPIRE_DATE,
+						t.TARGET_SLOGAN TIME_SLOGAN,
+						'100' TIME_MODE,
+						t.CREATE_DATE,
+						t.UPDATE_DATE,
+						t.TARGET_TYPE TIME_TYPE,
+						t.TARGET_STATUS TIME_STATUS,
+						t.CYCLE_DATE,
+						t.CYCLE_TYPE
+					FROM
+						TIME_TARGET t
+					WHERE
+						t.VALID = '0'
+					AND t.TARGET_STATUS = '10'
+					AND t.USER_ID = #{userId,jdbcType=INTEGER}
+					ORDER BY
+						t.TARGET_EXPIRE_DATE
+					LIMIT #{pageNum,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+				)
+				UNION
+					(
+						SELECT
+							d.HOLIDAY_ID TIME_ID,
+							d.HOLIDAY_NAME TIME_NAME,
+							d.HOLIDAY_EXPIRE_DATE TIME_EXPIRE_DATE,
+							d.HOLIDAY_SLOGAN TIME_SLOGAN,
+							'200' TIME_MODE,
+							d.CREATE_DATE,
+							d.UPDATE_DATE,
+							d.HOLIDAY_TYPE TIME_TYPE,
+							d.HOLIDAY_STATUS TIME_STATUS,
+							d.CYCLE_DATE,
+							d.CYCLE_TYPE
+						FROM
+							TIME_HOLIDAY d
+						WHERE
+							d.VALID = '0'
+						AND d.HOLIDAY_STATUS = '10'
+						AND d.USER_ID = #{userId,jdbcType=INTEGER}
+						ORDER BY
+							d.HOLIDAY_EXPIRE_DATE
+						LIMIT #{pageNum,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+					)
+			) p
+		ORDER BY
+			p.TIME_EXPIRE_DATE
+		LIMIT #{pageNum,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+	</select>
+	
+	<select id="countTime" resultType="java.lang.Integer">
+		SELECT
+			count(*)
+		FROM
+			(
+				(
+					SELECT
+						t.TARGET_ID TIME_ID,
+						t.TARGET_NAME TIME_NAME,
+						t.TARGET_EXPIRE_DATE TIME_EXPIRE_DATE,
+						t.TARGET_SLOGAN TIME_SLOGAN,
+						'100' TIME_MODE,
+						t.CREATE_DATE,
+						t.UPDATE_DATE,
+						t.TARGET_TYPE TIME_TYPE,
+						t.TARGET_STATUS TIME_STATUS,
+						t.CYCLE_DATE,
+						t.CYCLE_TYPE
+					FROM
+						TIME_TARGET t
+					WHERE
+						t.VALID = '0'
+					AND t.TARGET_STATUS = '10'
+					AND t.USER_ID = #{userId,jdbcType=INTEGER}
+				)
+				UNION
+					(
+						SELECT
+							d.HOLIDAY_ID TIME_ID,
+							d.HOLIDAY_NAME TIME_NAME,
+							d.HOLIDAY_EXPIRE_DATE TIME_EXPIRE_DATE,
+							d.HOLIDAY_SLOGAN TIME_SLOGAN,
+							'200' TIME_MODE,
+							d.CREATE_DATE,
+							d.UPDATE_DATE,
+							d.HOLIDAY_TYPE TIME_TYPE,
+							d.HOLIDAY_STATUS TIME_STATUS,
+							d.CYCLE_DATE,
+							d.CYCLE_TYPE
+						FROM
+							TIME_HOLIDAY d
+						WHERE
+							d.VALID = '0'
+						AND d.HOLIDAY_STATUS = '10'
+						AND d.USER_ID = #{userId,jdbcType=INTEGER}
+					)
+			) p
 	</select>
 </mapper>

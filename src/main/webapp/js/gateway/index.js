@@ -1,23 +1,37 @@
 //var remainCountDownTime;
 var intervalTime = 27;
 var stopInterval;
+var stopIntervalArray = new Array();
 
 initTime();
 
 function initTime(){
 	$.ajax({
-		url: '/time/time/queryMostImportantTime',
+		//url: '/time/time/queryMostImportantTime',
+		url: '/time/time/queryPagingTime/0',
 		type: 'get',
 //		beforeSend: function(){
 //			loading("加载中");
 //		},
-		success: function(data){
-			var mostTime = data.data;
-			console.log(mostTime);
-			$('#mostTimeName').text(mostTime.timeName);
-			$('#mostTimeSlogan').text(mostTime.timeSlogan);
-			//showRemainDate(mostTime);
-			stopInterval = setInterval(showRemainDate,intervalTime,mostTime);
+		success: function(result){
+//			var mostTime = data.data;
+//			console.log(mostTime);
+//			$('#mostTimeName').text(mostTime.timeName);
+//			$('#mostTimeSlogan').text(mostTime.timeSlogan);
+//			stopInterval = setInterval(showRemainDate,intervalTime,mostTime);
+			$('#bottomDiv').html("");
+			console.log(result.data);
+			var timeList = result.data.dataList;
+			for(index in timeList){
+				if(0 == index){
+					$('#mostTimeName').text(timeList[0].timeName);
+					$('#mostTimeSlogan').text(timeList[0].timeSlogan);
+					stopInterval = setInterval(showRemainDate,intervalTime,timeList[0]);
+				}else{
+					addBottomTime(timeList[index]);
+				}
+			}
+			
 		},
 		error: function(){
 			alert("网络异常，请稍后重试！");
@@ -29,6 +43,31 @@ function initTime(){
 	});
 }
 
+//添加底部计时
+function addBottomTime(time){
+	//名称h2
+	var nameH2 = $("<h2></h2>").text(time.timeName);
+	//计时p
+	var dateP = $("<p></p>");
+	//口号p
+	var sloganP = $("<p></p>");
+	//进度条内层div
+//	var progressInDiv = $("<div></div>").attr("role","progressbar").attr("aria-valuenow","0")
+//	.attr("aria-valuemin","0").attr("aria-valuemax","100")
+//	.addClass("progress-bar progress-bar-success progress-bar-striped active most-remain-progress");
+//	//进度条外层div
+//	var progressOutDiv = $("<div></div>").addClass("progress");
+//	progressOutDiv.append(progressInDiv);
+	//列div
+	var colDiv = $("<div></div>").addClass("col-md-4");
+	colDiv.append(nameH2,dateP,sloganP);
+	//行div
+	var rowDiv = $("<div></div>").addClass("row");
+	rowDiv.append(colDiv);
+	//添加一行计时
+	$('#bottomDiv').append(rowDiv);
+}
+
 function showRemainDate(mostTime){
 	var progressBar = $('#mostRemainProgress');
 	var totalCountDownTime = mostTime.totalCountDownTime;
@@ -36,8 +75,8 @@ function showRemainDate(mostTime){
 	var showRemainDate = getRemainDate(remainCountDownTime);
 	$('#mostRemainDate').text(showRemainDate);
 	mostTime.remainCountDownTime = remainCountDownTime - intervalTime;
-	//console.log(remainCountDownTime);
 	//动态的，颜色要变，结束时的停止，停止后的处理（进度条停止，是否重新开始计时，改变数据（是否结束状态，有周期则延长结束时间）
+	//刷新周期后要以时间重新排序
 	var progress;
 	if(remainCountDownTime <= 0){
 		var progress = 100;
@@ -50,9 +89,14 @@ function showRemainDate(mostTime){
 		progressBar.removeClass("active");
 		if(mostTime.cycleDate){
 			defer(mostTime);
+		}else{
+			changeStatus(mostTime);
 		}
 	}else{
-		progress = 100 - parseInt((remainCountDownTime/totalCountDownTime)*1000);
+		progress = 100 - parseInt((remainCountDownTime/totalCountDownTime)*100);
+		if(100 == progress){
+			progress = 99;
+		}
 		if(progress < 70){
 			if(progressBar.hasClass("progress-bar-over")){
 				progressBar.removeClass("progress-bar-over");
@@ -86,7 +130,7 @@ function defer(mostTime){
 //			loading("加载中");
 //		},
 		success: function(data){
-			alert(data.code);
+			initTime();
 		},
 		error: function(){
 			alert("网络异常，请稍后重试！");
@@ -95,5 +139,21 @@ function defer(mostTime){
 //		complete: function(){
 //			loaded();
 //		}
+	});
+}
+
+function changeStatus(mostTime){
+	$.ajax({
+		url: '/time/time/changeOverStatus',
+		data:JSON.stringify(mostTime),
+		type: 'post',
+		dataType:'json',
+		contentType:'application/json',
+		success: function(data){
+			initTime();
+		},
+		error: function(){
+			alert("网络异常，请稍后重试！");
+		}
 	});
 }

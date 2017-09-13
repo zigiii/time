@@ -11,5 +11,9 @@ public interface TimeService {
 
 	public ResponseResult queryMostImportantTime();
 	
-	public ResponseResult deferTime(Time timeTarget);
+	public ResponseResult queryPagingTime(int pageNum);
+	
+	public ResponseResult deferTime(Time time);
+	
+	public ResponseResult changeOverStatus(Time time);
 }

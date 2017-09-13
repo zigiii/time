@@ -29,6 +29,15 @@
 			<if test="targetName != null">
 				TARGET_NAME = #{targetName,jdbcType=VARCHAR},
 			</if>
+			<if test="targetExpireDate != null">
+				TARGET_EXPIRE_DATE = #{targetExpireDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="targetStatus != null">
+				TARGET_STATUS = #{targetStatus,jdbcType=CHAR},
+			</if>
+			<if test="updateDate != null">
+				UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+			</if>
 		</set>
 		<where>
 			TARGET_ID = #{targetId,jdbcType=INTEGER}
