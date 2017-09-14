@@ -23,11 +23,27 @@ function getNowFormatDate(time) {
     return currentdate;
 }
 
-//获取剩余时间
+//获取剩余时间,默认精确到毫秒
 //time: 毫秒数
-function getRemainDate(time){
+//precision: 精确度，1毫秒，2秒，3分，4时，5天
+function getRemainDate(time,precision){
+	var remianDate = "";
+	if(undefined == precision){
+		precision = 1;
+	}
 	if(time <= 0){
-		return "0天0时0分0秒 000";
+		if(5 == precision){
+			remianDate = "0天";
+		}else if(4 == precision){
+			remianDate = "0天0时";
+		}else if(3 == precision){
+			remianDate = "0天0时0分";
+		}else if(2 == precision){
+			remianDate = "0天0时0分0秒";
+		}else if(1 == precision){
+			remianDate = "0天0时0分0秒 000";
+		}
+		return remianDate;
 	}
 	var showMillisecond = time%1000;
 	
@@ -41,11 +57,20 @@ function getRemainDate(time){
 	var showHour = hour % 24;
 
 	var day = hour / 24;
-	return parseInt(day) + "天" + parseInt(showHour) + "时" + parseInt(showMinute) + "分" + parseInt(showSecond) + "秒 " + parseInt(showMillisecond);
+	if(5 == precision){
+		remianDate = parseInt(day) + "天";
+	}else if(4 == precision){
+		remianDate = parseInt(day) + "天" + parseInt(showHour) + "时";
+	}else if(3 == precision){
+		remianDate =  parseInt(day) + "天" + parseInt(showHour) + "时" + parseInt(showMinute) + "分";
+	}else if(2 == precision){
+		remianDate = parseInt(day) + "天" + parseInt(showHour) + "时" + parseInt(showMinute) + "分" + parseInt(showSecond) + "秒";
+	}else if(1 == precision){
+		remianDate = parseInt(day) + "天" + parseInt(showHour) + "时" + parseInt(showMinute) + "分" 
+		+ parseInt(showSecond) + "秒" + parseInt(showMillisecond);
+	}
+	return remianDate;
 }
-
-
-
 
 
 

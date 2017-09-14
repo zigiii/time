@@ -1,9 +1,14 @@
 package com.alice.time.utils;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import com.alice.time.enumhouse.DateFormatEnum;
 
@@ -14,27 +19,30 @@ public class DateUtil {
 		return sdf.format(new Date());
 	}
 	
-//	public static Date formatStringToDate(String date, DateFormatEnum format){
-//		
-//	}
-//	
-//	  //** 
-////  * 增加日期中某类型的某数值。如增加日期 
-////  * @param date 日期字符串 
-////  * @param dateType 类型 
-////  * @param amount 数值 
-////  * @return 计算后日期字符串 
-////  */
-// private static String addTime(String date, int dateType, int value) {  
-//     String dateString = null;  
-//     DateStyle dateStyle = getDateStyle(date);  
-//     if (dateStyle != null) {  
-//         Date myDate = StringToDate(date, dateStyle);  
-//         myDate = addInteger(myDate, dateType, amount);  
-//         dateString = DateToString(myDate, dateStyle);  
-//     }  
-//     return dateString;  
-// }  
+	public static String getBeiJingDate(){
+		String beijingDate = getWebsiteDate("http://www.baidu.com");
+		if(null == beijingDate){
+			beijingDate = getWebsiteDate("http://www.taobao.com");
+		}
+		return beijingDate;
+	}
+	
+	private static String getWebsiteDate(String webUrl){
+		try {
+            URL url = new URL(webUrl);// 取得资源对象
+            URLConnection uc = url.openConnection();// 生成连接对象
+            uc.connect();// 发出连接
+            long ld = uc.getDate();// 读取网站日期时间
+            Date date = new Date(ld);// 转换为标准时间对象
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);// 输出北京时间
+            return sdf.format(date);
+        } catch (MalformedURLException e) {
+            
+        } catch (IOException e) {
+            
+        }
+        return null;
+	}
 	
 	//工具测试方法
 	public static void main(String[] args) {

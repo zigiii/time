@@ -1,5 +1,6 @@
 //var remainCountDownTime;
 var intervalTime = 27;
+var bottomIntervalTime = 60000;
 var stopInterval;
 var stopIntervalArray = new Array();
 
@@ -41,31 +42,6 @@ function initTime(){
 //			loaded();
 //		}
 	});
-}
-
-//添加底部计时
-function addBottomTime(time){
-	//名称h2
-	var nameH2 = $("<h2></h2>").text(time.timeName);
-	//计时p
-	var dateP = $("<p></p>");
-	//口号p
-	var sloganP = $("<p></p>");
-	//进度条内层div
-//	var progressInDiv = $("<div></div>").attr("role","progressbar").attr("aria-valuenow","0")
-//	.attr("aria-valuemin","0").attr("aria-valuemax","100")
-//	.addClass("progress-bar progress-bar-success progress-bar-striped active most-remain-progress");
-//	//进度条外层div
-//	var progressOutDiv = $("<div></div>").addClass("progress");
-//	progressOutDiv.append(progressInDiv);
-	//列div
-	var colDiv = $("<div></div>").addClass("col-md-4");
-	colDiv.append(nameH2,dateP,sloganP);
-	//行div
-	var rowDiv = $("<div></div>").addClass("row");
-	rowDiv.append(colDiv);
-	//添加一行计时
-	$('#bottomDiv').append(rowDiv);
 }
 
 function showRemainDate(mostTime){
@@ -117,6 +93,44 @@ function showRemainDate(mostTime){
 	$('#mostRemainProgress').css("width",progress+"%");
 	$('#mostRemainProgress').attr("aria-valuenow",progress);
 	$('#mostRemainProgress').text(progress+"%");
+}
+
+//添加底部计时
+function addBottomTime(time){
+	//名称h2
+	var nameH2 = $("<h2></h2>").text(time.timeName);
+	//计时p
+	var dateP = $("<p></p>").addClass("bottom-date-style");
+	//口号p
+	var sloganP = $("<p></p>").addClass("bottom-slogan-style").text(time.timeSlogan);
+	//进度条内层div
+//	var progressInDiv = $("<div></div>").attr("role","progressbar").attr("aria-valuenow","0")
+//	.attr("aria-valuemin","0").attr("aria-valuemax","100")
+//	.addClass("progress-bar progress-bar-success progress-bar-striped active most-remain-progress");
+//	//进度条外层div
+//	var progressOutDiv = $("<div></div>").addClass("progress");
+//	progressOutDiv.append(progressInDiv);
+	//列div
+	var colDiv = $("<div></div>").addClass("col-xs-12");
+	colDiv.append(nameH2,dateP,sloganP);
+	//行div
+	var rowDiv = $("<div></div>").addClass("row");
+	rowDiv.append(colDiv);
+	//添加一行计时
+	$('#bottomDiv').append(rowDiv);
+	showBottomRemainDate(time,dateP);
+	stopIntervalArray[time.timeId + time.timeMode] = setInterval(showBottomRemainDate,bottomIntervalTime,time,dateP);
+}
+
+//低于三小时内的循环周期，不发短信提示，原则：省钱
+function showBottomRemainDate(mostTime,dateP){
+	var remainCountDownTime = mostTime.remainCountDownTime;
+	var showRemainDate = getRemainDate(remainCountDownTime,3);
+	dateP.text(showRemainDate);
+	mostTime.remainCountDownTime = remainCountDownTime - bottomIntervalTime;
+	if(remainCountDownTime <= 0){
+		stopIntervalArray(mostTime.timeId + mostTime.timeMode);
+	}
 }
 
 function defer(mostTime){

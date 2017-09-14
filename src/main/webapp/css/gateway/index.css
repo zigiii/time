@@ -6,12 +6,27 @@
   border-style: solid;
   border-color: rgba(86,61,124,.2);
 }
-
 .most-remain-progress {
 	min-width: 1%;
 	width: 1%;
 }
-
 .progress-bar-over {
   background-color: #969696;
+}
+.bottom-btn-center {
+	line-height: 100%;
+	vertical-align: middle;
+	text-align: center;
+}
+.bottom-btn-style {
+	width: 100%;
+	height: 100%;
+	font-size: xx-large;
+	border: none;
+}
+.bottom-date-style {
+	font-size: xx-large;
+}
+.bottom-slogan-style {
+	font-size: x-large;
 }
